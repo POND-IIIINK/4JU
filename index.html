@@ -109,9 +109,30 @@ footer{padding:4px 16px 24px;color:var(--mute);font-size:11px;max-width:900px}
 @media (max-width:1100px){.panels{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:900px){.dock{grid-template-columns:1fr}#scan{height:clamp(400px,66vh,680px)}.brand{flex-basis:100%}}
 @media (max-width:560px){.panels{grid-template-columns:1fr}.w2{grid-column:auto}.tabs{grid-template-columns:repeat(3,minmax(0,1fr))}.ms .gl button{font-size:28px}}
+
+.jump{position:sticky;top:0;z-index:20;display:flex;gap:2px;overflow-x:auto;background:var(--ink);padding:0 10px;scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump a{color:#d8d8d2;text-decoration:none;font-size:12px;padding:8px 12px;white-space:nowrap;letter-spacing:.04em}
+.jump a:hover,.jump a.on{background:#fff;color:var(--ink)}
+.jump .sp{flex:1}
+.jump a.go2{background:var(--hot);color:#fff;font-weight:700}
+.how{display:flex;gap:6px 22px;flex-wrap:wrap;padding:7px 16px;background:#fff;border-bottom:1px solid var(--line);font-size:12px}
+.how b{display:inline-block;background:var(--ink);color:#fff;width:18px;height:18px;line-height:18px;text-align:center;margin-right:6px;font-size:11px}
+#f,#work,#myeong,#readP,#ohP,#duP,#salP,#ruleP{scroll-margin-top:38px}
+.work{display:grid;grid-template-columns:minmax(330px,390px) minmax(0,1fr);align-items:start;border-bottom:1px solid var(--ink)}
+.side{position:sticky;top:34px;max-height:calc(100vh - 34px);overflow:auto;padding:10px 8px 10px 16px;display:flex;flex-direction:column;gap:8px;border-right:1px solid var(--line)}
+.side .ms .gl button{font-size:26px}
+.mainc{min-width:0}
+.mainc .stage{border-bottom:1px solid var(--line)}
+.mainc #scan{height:clamp(460px,calc(100vh - 190px),900px)}
+.mainc .bar{border-bottom:0}
+@media (max-width:1000px){.work{grid-template-columns:1fr}.side{position:static;max-height:none;order:2;padding:10px 16px;border-right:0}}
 </style>
 </head>
 <body>
+<nav class="jump" aria-label="바로가기">
+  <a href="#f">① 정보 입력</a><a href="#work">② 스캔</a><a href="#myeong">③ 명식표</a><a href="#readP">④ 풀이</a><a href="#ohP">⑤ 오행·십성</a><a href="#duP">⑥ 대운·세운</a><a href="#salP">⑦ 합충·신살</a><a href="#ruleP">⑧ 원리</a><span class="sp"></span><a href="#f" class="go2" id="goTop">내 사주 넣기</a>
+</nav>
 <header class="top">
   <div class="brand">
     <h1>四柱 SCAN · 사주 스캔</h1>
@@ -120,6 +141,7 @@ footer{padding:4px 16px 24px;color:var(--mute);font-size:11px;max-width:900px}
   <nav class="tabs" id="tabs" aria-label="단계별로 보기"></nav>
 </header>
 
+<div class="how"><span><b>1</b>아래에 이름과 생년월일·시를 넣습니다</span><span><b>2</b>명식표에서 여덟 글자를 확인합니다</span><span><b>3</b>스캔 위 ①–⑤ 단계를 눌러 하나씩 봅니다</span><span><b>4</b>풀이·대운은 위 메뉴로 바로 이동합니다</span></div>
 <form id="f" novalidate>
   <div class="fd"><label for="fName">이름</label><input id="fName" type="text" autocomplete="name" placeholder="홍길동"></div>
   <div class="fd"><label for="fSex">성별</label><select id="fSex"><option value="M">남</option><option value="F">여</option></select></div>
@@ -135,6 +157,9 @@ footer{padding:4px 16px 24px;color:var(--mute);font-size:11px;max-width:900px}
   <div id="fErr" role="alert"></div>
 </form>
 
+<div class="work" id="work">
+<aside class="side"><section class="panel" id="myeong"></section><section class="panel" id="insp" aria-live="polite"></section></aside>
+<div class="mainc">
 <div class="capbar"><div id="capWho"></div><div class="capx"><b id="capStep"></b><span id="capText"></span></div></div>
 
 <main class="stage">
@@ -154,22 +179,20 @@ footer{padding:4px 16px 24px;color:var(--mute);font-size:11px;max-width:900px}
   <span id="hint">글자·선·링 칸을 누르면 아래에 설명이 나옵니다 · 끌어서 이동 · 회전 모드에서는 마우스 좌우로 돌립니다</span>
 </div>
 
-<div class="dock">
-  <section class="panel" id="myeong"></section>
-  <section class="panel" id="insp" aria-live="polite"></section>
+</div>
 </div>
 
 <section class="panels">
-  <div class="panel w2"><h2>풀이</h2><div id="reading"></div></div>
-  <div class="panel"><h2>오행 세력</h2><div id="ohaeng"></div></div>
+  <div class="panel w2" id="readP"><h2>풀이</h2><div id="reading"></div></div>
+  <div class="panel" id="ohP"><h2>오행 세력</h2><div id="ohaeng"></div></div>
   <div class="panel"><h2>십성 · 신강신약</h2><div id="sipsung"></div></div>
-  <div class="panel w2"><h2>대운 (10년 운)</h2><div class="dus" id="daeun"></div><p class="cap" id="daeunCap"></p>
+  <div class="panel w2" id="duP"><h2>대운 (10년 운)</h2><div class="dus" id="daeun"></div><p class="cap" id="daeunCap"></p>
     <h2 style="margin-top:10px">평생 흐름 · 나이 0–90세</h2><canvas id="fc" height="120"></canvas><p class="cap">용신 추정에 비춘 대운과 세운의 유불리를 0–1로 그린 선입니다. 그래프를 누르면 그 해로 이동합니다.</p></div>
   <div class="panel"><h2>선택한 해에 강조되는 영역</h2><div id="dom"></div><p class="cap">대운과 세운의 십성이 가리키는 주제이며, 좋고 나쁨이 아닙니다.</p>
     <h2 style="margin-top:10px">합 · 충 · 형 · 파 · 해</h2><ul class="ls" id="relList"></ul></div>
-  <div class="panel"><h2>신살 · 공망</h2><ul class="ls" id="salList"></ul>
+  <div class="panel" id="salP"><h2>신살 · 공망</h2><ul class="ls" id="salList"></ul>
     <h2 style="margin-top:10px">계산 과정</h2><dl class="kv" id="calc" style="grid-template-columns:92px 1fr"></dl></div>
-  <div class="panel w4"><h2>이 계기가 따르는 원리와 규칙</h2><div class="rules">
+  <div class="panel w4" id="ruleP"><h2>이 계기가 따르는 원리와 규칙</h2><div class="rules">
     <p><b>연주는 입춘에 바뀝니다.</b> 설날이나 1월 1일이 아니라 태양 황경이 315°가 되는 순간이 기준입니다. 입춘 전에 태어났으면 전년도 간지를 씁니다.</p>
     <p><b>월주는 절기로 나눕니다.</b> 입춘(寅월)부터 황경 30°마다 달이 바뀌며, 음력 달과는 다릅니다. 월간은 연간에서 정해집니다(甲己년은 丙寅월부터).</p>
     <p><b>일주는 60갑자가 끊김 없이 이어집니다.</b> 율리우스 일수로 계산하므로 달력 개정이나 윤달의 영향을 받지 않습니다.</p>
@@ -651,7 +674,7 @@ function readForm(demo,quiet){const v=id=>+$(id).value,err=m=>{if(!quiet)$('fErr
   return{name:$('fName').value.trim(),sex:$('fSex').value,y,m,d,h,mi,noTime,tz,off,lon,corr:$('fCorr').value,zi:$('fZi').value,demo:!!demo,lunar:cal!=='solar'}}
 function run(inp){lastSig=sig(inp);C=compute(inp);if(inp.lunar)C.log.unshift(['음력 → 양력',inp.y+'-'+p2(inp.m)+'-'+p2(inp.d)]);
   Y=clamp(new Date().getFullYear(),C.birthY,C.birthY+100);const sy=$('sYear');sy.min=C.birthY;sy.max=C.birthY+100;sy.value=Y;build();render();select({t:'n',i:C.P[2].ns});reveal=reduce?1:0;setStep(0)}
-$('f').addEventListener('submit',e=>{e.preventDefault();const i=readForm(false);if(i){run(i);cv.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}});
+$('f').addEventListener('submit',e=>{e.preventDefault();const i=readForm(false);if(i){run(i);$('work').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}});
 $('sYear').addEventListener('input',e=>setYear(+e.target.value));
 let liveT=0,lastSig='';const sig=i=>JSON.stringify([i.name,i.sex,i.y,i.m,i.d,i.h,i.mi,i.noTime,i.tz,i.off,i.lon,i.corr,i.zi]);
 const live=()=>{clearTimeout(liveT);liveT=setTimeout(()=>{const i=readForm(false,true);if(i&&sig(i)!==lastSig){$('fErr').textContent='';run(i)}},450)};
@@ -684,6 +707,14 @@ new ResizeObserver(()=>{size();if(!tourOn)base.s=fitS((step?VIEWS[step-1]:FULL).
 run({name:'홍길동',sex:'M',y:1990,m:5,d:15,h:14,mi:30,noTime:false,tz:'Asia/Seoul',lon:126.98,corr:'lmt',zi:'jeong',demo:true});
 if(document.fonts&&document.fonts.load)document.fonts.load('700 14px "Noto Sans KR"','甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥木火土金水갑자').then(()=>bakeRing()).catch(()=>{});
 requestAnimationFrame(frame);
+
+/* ---------- jump nav ---------- */
+(function(){const links=[...document.querySelectorAll('.jump a[href^="#"]:not(.go2)')];
+links.forEach(l=>l.addEventListener('click',e=>{const t=document.querySelector(l.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});if(t.id==='f'){const n=$('fName');setTimeout(()=>n.focus({preventScroll:true}),400)}}}));
+const go=$('goTop');go.addEventListener('click',e=>{e.preventDefault();$('f').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});setTimeout(()=>$('fName').focus({preventScroll:true}),400)});
+const ids=links.map(l=>document.querySelector(l.getAttribute('href')));
+const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){const i=ids.indexOf(en.target);links.forEach((l,j)=>l.classList.toggle('on',j===i))}})},{rootMargin:'-40% 0px -55% 0px'});
+ids.forEach(el=>el&&el.id!=='myeong'&&io.observe(el))})();
 
 })();
 </script>
